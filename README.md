@@ -90,7 +90,7 @@ response = requests.post(
     headers={'X-API-KEY': 'API KEY HERE'}
 )
 
-result = response.json().get('base64Image')
+result = response.json().get('imageBase64')
 
 # change `result.jpg` to a file path where you want to save the resulting image
 with open('result.jpg', 'wb') as file:
