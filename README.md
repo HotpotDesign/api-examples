@@ -104,7 +104,6 @@ with open('result.jpg', 'wb') as file:
 
 // an absolute path to an image file whose background you want to remove
 $path = '/full/file/path/to/image.jpg';
-$type = pathinfo($path, PATHINFO_EXTENSION);
 $base64 = base64_encode(file_get_contents($path));
 
 $ch = curl_init();
