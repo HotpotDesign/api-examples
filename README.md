@@ -25,11 +25,11 @@ curl -H 'Content-Type: application/json' -H 'X-API-KEY: API_KEY_HERE' --data '{"
 ```javascript
 'use strict';
 
-var fs = require('fs');
-var https = require('https');
+const fs = require('fs');
+const https = require('https');
 
 const data = JSON.stringify({
-  // an absolute path to an image file whose background you want to remove
+  // Absolute path to an image file whose background you want to remove
   imageBase64: fs.readFileSync('/absolute/file/path.jpg', 'base64'),
 });
 
@@ -55,7 +55,7 @@ const request = https.request(options, response => {
 
   response.on('end', () => {
     const jsonResponse = JSON.parse(body.join(''));
-    // an absolute path where you want to save the resulting image
+    // Absolute path where you want to save the resulting image
     fs.writeFileSync('/absolute/file/path-nobackground.jpg', Buffer.from(jsonResponse['imageBase64'], 'base64'));
   })
 });
