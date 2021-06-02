@@ -2,22 +2,13 @@
 
 This repository contains examples of how to use Hotpot's [Background Remover](https://hotpot.ai/remove-background) API.
 
-## Overview
-
-Please **do not include** Content-Type, Content-Encoding, or charset with your base64 strings:
-
-Bad:
-
-`data:image/png;base64,iVBORw0KGgoA...`
-
-Good:
-
-`iVBORw0KGgoA...`
-
 ## Curl
 
 ```bash
-curl -H 'Content-Type: application/json' -H 'X-API-KEY: API_KEY_HERE' --data '{"imageBase64": "BASE_64_STRING_HERE"}' -X POST "https://api.hotpot.ai/remove-background"
+curl -H 'Authorization: API_KEY_HERE' \
+     -F 'image=@/full/path/to/image.jpg' \
+     -o /full/path/to/output.jpg \
+     -X POST 'https://api-bin.hotpot.ai/remove-background'
 ```
 
 ## Node
