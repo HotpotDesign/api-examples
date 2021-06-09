@@ -7,7 +7,7 @@ This repository contains examples of how to use Hotpot's [Background Remover](ht
 ```bash
 curl -H 'Authorization: API_KEY_HERE' \
      -F 'image=@/full/path/to/image.jpg' \
-     -o /full/path/to/output.jpg \
+     -o '/full/path/to/image-nobg.jpg' \
      -X POST 'https://api-bin.hotpot.ai/remove-background'
 ```
 
@@ -68,24 +68,23 @@ pip3 install requests
 ```
 
 ```python
-import base64
 import requests
 
-# change `file.jpg` to a file path that leads to the base image
-image = open('file.jpg', 'rb').read()
-base64_encoded_image = base64.b64encode(image).decode('utf-8')
+headers = {
+  'Authorization': 'API_KEY_HERE',
+}
 
-response = requests.post(
-    'https://api.hotpot.ai/remove-background',
-    json={'imageBase64': base64_encoded_image},
-    headers={'X-API-KEY': 'API KEY HERE'}
-)
+# change to a full file path of the image you want to transform
+body = {
+  'image': open('/full/path/to/image.jpg', 'rb'),
+}
 
-result = response.json().get('imageBase64')
+response = requests.post('https://api-bin.hotpot.ai/remove-background', headers=headers, files=body)
 
-# change `result.jpg` to a file path where you want to save the resulting image
-with open('result.jpg', 'wb') as file:
-    file.write(base64.b64decode(result))
+# change to a full file path where you want to save the resulting image
+with open('/full/path/to/image-nobg.jpg', 'wb') as file:
+  file.write(response.content)
+
 ```
 
 ## PHP
