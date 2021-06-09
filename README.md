@@ -92,34 +92,28 @@ with open('/full/path/to/image-nobg.jpg', 'wb') as file:
 ```php
 <?php
 
-// an absolute path to an image file whose background you want to remove
-$path = '/full/file/path/to/image.jpg';
-$base64 = base64_encode(file_get_contents($path));
-
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, 'https://api.hotpot.ai/remove-background');
+// change to a full file path of the image you want to transform
+$body = [
+  'image' => new CurlFile('/full/path/to/image.jpg')
+];
+
+curl_setopt($ch, CURLOPT_URL, 'https://api-bin.hotpot.ai/remove-background');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, "{\"imageBase64\": \"{$base64}\"}");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
-$headers = array();
-$headers[] = 'Content-Type: application/json';
-// Replace YOUR_API_KEY_HERE with your actual API key
-$headers[] = 'X-API-KEY: YOUR_API_KEY_HERE';
+$headers = array('Authorization: API_KEY_HERE');
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-$result = curl_exec($ch);
-if (curl_errno($ch)) {
-  echo 'Error:' . curl_error($ch);
-}
+$response = curl_exec($ch);
+
 curl_close($ch);
 
-$json_response = json_decode($result, true);
-$image = base64_decode($json_response['imageBase64']);
+// change to a full file path where you want to save the resulting image
+file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
-// an absolute path where you want to save the resulting image
-file_put_contents('/full/file/path/to/image-nobg.jpg', $image);
 ```
 
 ## C# (.NET)
