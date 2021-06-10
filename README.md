@@ -8,46 +8,56 @@ This repository contains examples of how to use Hotpot's [Background Remover](ht
 curl -H 'Authorization: API_KEY_HERE' \
      -F 'image=@/full/path/to/image.jpg' \
      -o '/full/path/to/image-nobg.jpg' \
-     -X POST 'https://api-bin.hotpot.ai/remove-background'
+     https://api-bin.hotpot.ai/remove-background
 ```
 
 ## Node
+
+Install the [form-data](https://www.npmjs.com/package/form-data) library first:
+
+```bash
+yarn add form-data
+```
+
 
 ```javascript
 'use strict';
 
 const fs = require('fs');
 const https = require('https');
+const FormData = require('form-data');
 
-const data = JSON.stringify({
-  // Absolute path to an image file whose background you want to remove
-  imageBase64: fs.readFileSync('/absolute/file/path.jpg', 'base64'),
-});
+const form = new FormData();
+// change to a full file path of the image you want to transform
+form.append('image', fs.createReadStream('/full/path/to/image.jpg'));
+
+const customHeaders = {
+  'Authorization': 'API_KEY_HERE'
+}
+
+// setting a correct MIME type and (multipart/form-data) a boundary for the payload
+const headers = {...form.getHeaders(), ...customHeaders}
 
 const options = {
   method: 'POST',
-  hostname: 'api.hotpot.ai',
+  hostname: 'api-bin.hotpot.ai',
   port: 443,
   path: '/remove-background',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-API-KEY': config.external_api_keys.hotpot,
-  },
+  headers: headers,
+  encoding: null,
 };
 
 const request = https.request(options, response => {
-  response.setEncoding('utf-8');
-
   const body = [];
 
   response.on('data', chunk => {
-    body.push(chunk);
+    body.push(Buffer.from(chunk));
   })
 
   response.on('end', () => {
-    const jsonResponse = JSON.parse(body.join(''));
-    // Absolute path where you want to save the resulting image
-    fs.writeFileSync('/absolute/file/path-nobackground.jpg', Buffer.from(jsonResponse['imageBase64'], 'base64'));
+    // change to a full file path where you want to save the resulting image
+    fs.writeFileSync('/full/path/to/image-nobg.jpg', Buffer.concat(body), 'binary');
+    request.end();
   })
 });
 
@@ -55,13 +65,12 @@ request.on('error', error => {
   console.error(error);
 });
 
-request.write(data);
-request.end();
+form.pipe(request);
 ```
 
 ## Python
 
-Make sure you have [requests](https://requests.readthedocs.io/en/master/) package installed:
+Install the [requests](https://requests.readthedocs.io/en/master/) library first:
 
 ```bash
 pip3 install requests
