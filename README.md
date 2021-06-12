@@ -124,33 +124,3 @@ curl_close($ch);
 file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
 ```
-
-## C# (.NET)
-
-```c#
-private async Task<PhotoResponseModel> RemoveBackgroundWithHotpot(string base64Image) {
-  var httpClient = new HttpClient();
-  using var request = new HttpRequestMessage(new HttpMethod("POST"), "https://api.hotpot.ai/remove-background");
-  request.Headers.TryAddWithoutValidation("X-API-KEY", "YOUR API KEY HERE");
-  request.Content = new StringContent("{\"imageBase64\": \"" + base64Image + "\"}");
-  request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-
-  var response = await httpClient.SendAsync(request);
-
-  var imageResultString = await response.Content.ReadAsStringAsync();
-  var deserializedContents = JsonSerializer.Deserialize<HotpotResponseModel>(imageResultString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-  if (deserializedContents != null && deserializedContents.StatusCode == 200) {
-      return new PhotoResponseModel { NewImage = deserializedContents.ImageBase64 };
-  }
-
-  return null;
-}
-
-
-public class HotpotResponseModel {
-  public int StatusCode { get; set; }
-  public string StatusMessage { get; set; }
-  public string ImageBase64 { get; set; }
-}
-```
