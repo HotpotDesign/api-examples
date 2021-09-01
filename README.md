@@ -124,3 +124,25 @@ curl_close($ch);
 file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
 ```
+
+## C#
+
+Install the [Flurl.Http](https://flurl.dev/) library first:
+
+```bash
+dotnet add package Flurl.Http
+```
+
+```csharp
+using var memoryStream = new MemoryStream(data);
+
+var request = await "https://api-bin.hotpot.ai/remove-background"
+    .WithHeader("Authorization", "API_KEY_HERE")
+     // change to a full file path of the image you want to transform
+    .PostMultipartAsync(builder => builder.AddFile("image", "/full/path/to/image.jpg"));
+
+var response = await request.GetBytesAsync();
+
+ // change to a full file path where you want to save the resulting image
+await File.WriteAllBytesAsync("/full/path/to/image-nobg.jpg", response);
+```
