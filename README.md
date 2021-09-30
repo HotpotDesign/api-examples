@@ -125,7 +125,7 @@ file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
 ```
 
-## C# #1
+## C# Flurl.Http
 
 Install the [Flurl.Http](https://flurl.dev/) library first:
 
@@ -147,7 +147,7 @@ var response = await request.GetBytesAsync();
 await File.WriteAllBytesAsync("/full/path/to/image-nobg.jpg", response);
 ```
 
-## C# #2
+## C# System.Net.Http
 
 Note: the `Add` function requires three parameters. Otherwise the binary data will be incorrectly sent as a string.
 
