@@ -151,7 +151,7 @@ await File.WriteAllBytesAsync("/full/path/to/image-nobg.jpg", response);
 
 Note: the `Add` function requires three parameters. Otherwise the binary data will be incorrectly sent as a string.
 
-```
+```csharp
 using System;
 using System.IO;
 using System.Net.Http;
