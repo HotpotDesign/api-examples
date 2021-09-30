@@ -125,7 +125,7 @@ file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
 ```
 
-## C#
+## C# #1
 
 Install the [Flurl.Http](https://flurl.dev/) library first:
 
@@ -145,4 +145,31 @@ var response = await request.GetBytesAsync();
 
  // change to a full file path where you want to save the resulting image
 await File.WriteAllBytesAsync("/full/path/to/image-nobg.jpg", response);
+```
+
+## C# #2
+
+Note: the `Add` function requires three parameters. Otherwise the binary data will be incorrectly sent as a string.
+
+```
+using System;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+class Program {
+  public static async Task Main (string[] args) {
+    var client = new HttpClient();
+    client.DefaultRequestHeaders.Add("Authorization", "API KEY HERE");
+
+    var form = new MultipartFormDataContent();
+    var image = new ByteArrayContent(File.ReadAllBytes("bg.jpg"));
+    form.Add(image, "image", "bg.jpg");
+
+    var response = await client.PostAsync("https://api-bin.hotpot.ai/remove-background", form);
+    var result = await response.Content.ReadAsByteArrayAsync();
+
+    System.IO.File.WriteAllBytes("nobg.jpg", result);
+  }
+}
 ```
