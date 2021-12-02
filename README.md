@@ -1,8 +1,41 @@
 # Hotpot.ai API examples
 
-This repository contains examples of how to use Hotpot's [Background Remover](https://hotpot.ai/remove-background) API.
+## Art Maker
 
-## Curl
+```Javascript
+// Set URL to monitor.
+const url = 'https://hotpot-temporary-images.s3.us-east-2.amazonaws.com/520.txt';
+pollAndRenderUrl(url);
+
+function pollAndRenderUrl(url) {
+	// Set how often to poll @url. Do not set lower than 5000.
+	const pollDuration = 5000;
+
+	// Create an interval to check @url every @pollDuration milliseconds.
+	const interval = setInterval(async () => {
+	  const response = await fetch(url, {
+	      method: 'GET',
+	      cache: 'no-cache',
+	      redirect: 'follow'
+	    });
+
+	    // File exists at @url?
+	    if (response.status === 200) {
+	      // If here, file exists so do something with it.
+
+	      // Clear @interval and stop polling.
+	      clearInterval(interval);
+	    }
+
+	}, pollDuration);
+}
+```
+
+## Background Remover
+
+The examples below illustrate how to invoke the [Background Remover](https://hotpot.ai/remove-background) API in different languages.
+
+### Curl
 
 ```bash
 curl -H 'Authorization: API_KEY_HERE' \
@@ -11,7 +44,7 @@ curl -H 'Authorization: API_KEY_HERE' \
      https://api-bin.hotpot.ai/remove-background
 ```
 
-## Node
+### Node
 
 Install the [form-data](https://www.npmjs.com/package/form-data) library first:
 
@@ -68,7 +101,7 @@ request.on('error', error => {
 form.pipe(request);
 ```
 
-## Python
+### Python
 
 Install the [requests](https://requests.readthedocs.io/en/master/) library first:
 
@@ -96,7 +129,7 @@ with open('/full/path/to/image-nobg.jpg', 'wb') as file:
 
 ```
 
-## PHP
+### PHP
 
 ```php
 <?php
@@ -125,7 +158,7 @@ file_put_contents('/full/path/to/image-nobg.jpg', $response);
 
 ```
 
-## C# Flurl.Http
+### C# Flurl.Http
 
 Install the [Flurl.Http](https://flurl.dev/) library first:
 
@@ -147,7 +180,7 @@ var response = await request.GetBytesAsync();
 await File.WriteAllBytesAsync("/full/path/to/image-nobg.jpg", response);
 ```
 
-## C# System.Net.Http
+### C# System.Net.Http
 
 Note: the `Add` function requires three parameters. Otherwise the binary data will be incorrectly sent as a string.
 
