@@ -8,8 +8,8 @@ const url = 'https://hotpot-temporary-images.s3.us-east-2.amazonaws.com/520.txt'
 pollAndRenderUrl(url);
 
 function pollAndRenderUrl(url) {
-	// Set how often to poll @url. Do not set lower than 5000.
-	const pollDuration = 5000;
+	// Set how often to poll @url. If set lower than 70000, your account will incur S3 charges.
+	const pollDuration = 70000;
 
 	// Create an interval to check @url every @pollDuration milliseconds.
 	const interval = setInterval(async () => {
