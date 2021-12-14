@@ -41,7 +41,7 @@ The examples below illustrate how to invoke the [Background Remover](https://hot
 curl -H 'Authorization: API_KEY_HERE' \
      -F 'image=@/full/path/to/image.jpg' \
      -o '/full/path/to/image-nobg.jpg' \
-     https://api-bin.hotpot.ai/remove-background
+     https://api.hotpot.ai/remove-background
 ```
 
 ### Node
@@ -73,7 +73,7 @@ const headers = {...form.getHeaders(), ...customHeaders}
 
 const options = {
   method: 'POST',
-  hostname: 'api-bin.hotpot.ai',
+  hostname: 'api.hotpot.ai',
   port: 443,
   path: '/remove-background',
   headers: headers,
@@ -121,7 +121,7 @@ body = {
   'image': open('/full/path/to/image.jpg', 'rb'),
 }
 
-response = requests.post('https://api-bin.hotpot.ai/remove-background', headers=headers, files=body)
+response = requests.post('https://api.hotpot.ai/remove-background', headers=headers, files=body)
 
 # change to a full file path where you want to save the resulting image
 with open('/full/path/to/image-nobg.jpg', 'wb') as file:
@@ -141,7 +141,7 @@ $body = [
   'image' => new CurlFile('/full/path/to/image.jpg')
 ];
 
-curl_setopt($ch, CURLOPT_URL, 'https://api-bin.hotpot.ai/remove-background');
+curl_setopt($ch, CURLOPT_URL, 'https://api.hotpot.ai/remove-background');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
@@ -169,7 +169,7 @@ dotnet add package Flurl.Http
 ```csharp
 using var memoryStream = new MemoryStream(data);
 
-var request = await "https://api-bin.hotpot.ai/remove-background"
+var request = await "https://api.hotpot.ai/remove-background"
     .WithHeader("Authorization", "API_KEY_HERE")
      // change to a full file path of the image you want to transform
     .PostMultipartAsync(builder => builder.AddFile("image", "/full/path/to/image.jpg"));
@@ -199,7 +199,7 @@ class Program {
     var image = new ByteArrayContent(File.ReadAllBytes("bg.jpg"));
     form.Add(image, "image", "bg.jpg");
 
-    var response = await client.PostAsync("https://api-bin.hotpot.ai/remove-background", form);
+    var response = await client.PostAsync("https://api.hotpot.ai/remove-background", form);
     var result = await response.Content.ReadAsByteArrayAsync();
 
     System.IO.File.WriteAllBytes("nobg.jpg", result);
