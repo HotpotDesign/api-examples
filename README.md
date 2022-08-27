@@ -1,5 +1,8 @@
 # Hotpot.ai API examples
 
+## Stable Diffusion API
+Hotpot.ai offers a [Stable Diffusion API](https://hotpot.ai/stable-diffusion-api) with both proprietary enhancements and raw access to the original model.
+
 ## Art Maker
 
 ```Javascript
